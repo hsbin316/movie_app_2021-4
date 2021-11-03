@@ -8,15 +8,19 @@
      3. console탭을 통해 state키에 보낸 데이터값을 확인한다.
      4. Navigation컴포넌트를 원래대로 돌려 놓는다.
      5. Movie 컴포넌트에 Link 컴포넌트를 임포트하고, Link 컴포넌트에 to props를 교재와 같이 작성한다.
-     6. Detail 컴포넌트를 routes폴더에 추가하고 Detail 컴포넌트에서 Movie 컴포넌트의 Link 컴포넌트가 보내준 영화 데이터를 확인할 수 있도록 console.log도 작성한다.
+     6. Detail 컴포넌트를 routes폴더에 추가하고 Detail 컴포넌트에서 Movie 컴포넌트의 Link 컴포넌트가 보내준 영화 데이터를 
+     확인할 수 있도록 console.log도 작성한다.
      7. App.js를 연 다음 Detail 컴포넌트를 임포트하고 Route 컴포넌트에 Detail컴포넌트를 교재와같이 작성한다.
-     8. 영화 카드를 클릭해서 /movie-detail로 이동한 후 화면에는 Detail 컴포넌트가 출력하고 있는 hello라는 문장을 확인한다. 그리고 console탭에서 Movie 컴포넌트에서 Link를 통해 보내준 데이터가 들어있는지 확인한다.
-     9. URL에 /movie-detail로 바로 이동한 후 console탭에 영화 데이터가 들어있는지 확인한다.   
+     8. 영화 카드를 클릭해서 /movie-detail로 이동한 후 화면에는 Detail 컴포넌트가 출력하고 있는 hello라는 문장을 확인한다. 
+     그리고 console탭에서 Movie 컴포넌트에서 Link를 통해 보내준 데이터가 들어있는지 확인한다.
+     9. URL에 /movie-detail로 바로 이동한 후 console탭에 영화 데이터가 들어있는지 확인한다. 
+     (영화의 데이터가 없어 state가 undefined으로 나온다.)  
 
 <b>내비게이션 만들어 보기</b>
 
-     5. Nacigation 컴포넌트의 위치를 확인 및 수정한다.
+     5. 실수로 Nacigation 컴포넌트를 HashRouter 바깥에 위치시켰는지 확인하고 실수했다면 수정한다.
      6. components폴더에 Navigation,css파일을 만들고 교재와 같이 작성한 다음 Navigation 컴포넌트에 임포트한다.
+     또 Navigation.css파일을 Navigation 컴포넌트에 적용시키기 위해 Navigation 컴포넌트의 JSX를 수정한다.
 
 ## [ 10월 27일 ]  
 ### <b>학습내용</b>
