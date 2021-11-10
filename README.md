@@ -25,6 +25,29 @@
       - 오류가 발생한 이유는 Detail컴포넌트는 [render() -> componentDidMount()]의 순서로 함수를 실행하기 때문이다.
       7. location.state가 없으면 render()함수가 null을 반환하도록 if문을 이용하여 수정을 하고 결과를 확인한다.
 
+<b>React의 특징</b>
+- 캡슐화된 컴포넌트로 개발되어 재사용이 용이하다.
+- 상호작용이 많은 UI개발에 적합하다.
+- DOM과는 별개로 상태를 관리할 수 있다.
+- 기존 코드와 별개로 개발이 가능하다.
+    
+<b>CDN: Content Delivery Network 또는 Content Distribution Network</b>   
+<b>React App의 개발환경으로 create-react-app을 사용하는 방법 외 CDN방식으로 사용할 수 있다.</b>
+
+     1. 새 html파일을 만든다
+     2. minify파일 링크르 사용한다.
+     3. crossorigin적용한다.
+     4. babel을 CDN으로 적용한다.
+     5. script의 type을 text/babel로 설정한다.
+
+<b>state가 포함된 component</b>
+- 동적인 데이터는 this.state로 접근할 수 있다.
+- state가 변하면 render()메서도가 다시 호출되어 화면이 갱신된다
+- 예제는 화면이 켜져있는 동안 초를 카운트하는 timer앱이다
+- 초기화 state를 0으로 출력한다.
+- 이후 componentDidMount()메소드로 1초에 한번씩 tick()메소드를 호출한다.
+- 호출된 tick()메소드는 setState()를 통해 state를 1씩 증가시킨다.      
+
 ## [ 11월 03일 ]  
 ### <b>학습내용</b>
 <b>영화 상세 정보 기능 만들어 보기</b>
