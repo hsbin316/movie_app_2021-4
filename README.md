@@ -1,4 +1,30 @@
 # 허성빈 201840235
+## [ 11월 10일 ]  
+### <b>학습내용</b>
+<b>영화 앱 깃허브에 배포하기</b>
+
+     1. package.json 파일을 열어 homepage 키와 키값을 browserslist 키 아래에 추가한다.
+      - 깃 허브 계정과 저장소 이름에 주의 [ https://계정.github.io/저장소 이름 ]
+     2. package.json 파일에 scripts 키값으로 명령어를 추가한다.
+     3. ( git add. / git commit -m "" / git push origin master )의 명령어를 사용하여 깃허브에 업로드
+     4. ( npm install gh-pages )의 명령어를 사용하여 gh-pages를 설치한다.
+     5. ( git remote -v )의 명령어를 입력하여 업로드한 깃허브 저장소의 주소를 확인한다.
+     6. ( npm run deploy )의 명령어를 입력하여 영화 앱을 배포한다.
+     7. URL에 'https://계정.github.io/저장소 이름'을 입력해서 확인한다.
+
+<b>리다이렉트 기능 만들어 보기</b>
+
+     1. 주소창에 localhost:3000를 입력하여 이동한 다음 console탭에서 history에 출력된 값을 펼쳐확인한다.
+     2. Detail컴포넌트를 교재와 같이 코드를 작성하여 함수형에서 컴포넌트로 변경한 다음 location, history 키를 구조 분해 할당한다.
+     3. location.state가 undefined인 경우 history.push("/")를 실행하도록 코드를 수정한다.
+     4. 주소창에 /movie-detail으로 입력한 후 결과를 확인한다.
+      - Home으로 돌아온것을 확인 할 수있다.
+     5. location.state.title을 출력하도록 교재와 같이 코드를 작성한다.
+     6. 다시 주소창에 /movie-detail으로 입력한 후 결과를 확인한다.
+      - TypeError. Cannot read property 'title' of undefined라는 오류가 발생할 것이다.
+      - 오류가 발생한 이유는 Detail컴포넌트는 [render() -> componentDidMount()]의 순서로 함수를 실행하기 때문이다.
+      7. location.state가 없으면 render()함수가 null을 반환하도록 if문을 이용하여 수정을 하고 결과를 확인한다.
+
 ## [ 11월 03일 ]  
 ### <b>학습내용</b>
 <b>영화 상세 정보 기능 만들어 보기</b>
