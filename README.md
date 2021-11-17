@@ -1,4 +1,160 @@
 # 허성빈 201840235
+## [ 11월 17일 ]  
+### <b>학습내용</b>
+<b>상태를 가지는 컴포넌트</b>
+ - 컴포넌트는 this.props를 이용해 입력 데이터를 다루는 것 외에도 내부적인 상태 데이터를 가질 수 있다. 이는 this.state로 접근할 수 있다.
+ - 컴포넌트의 상태 데이터가 바뀌면 render()가 다시 호출되어 마크업이 갱신된다.
+
+ <b>애플리케이션</b>
+ - props와 state를 사용해서 간단한 Todo 애플리케이션을 만들 수 있다. 
+ - 이벤트 핸들러들이 인라인으로 각각 존재하는 것처럼 보이지만, 실제로는 이벤트 위임을 
+통해 하나로 구현된다.   
+
+<b>Todo 예제</b>   
+ Todoapp과 Todolist 두개의 컴포넌트로 구성   
+ handleChange는 모든 키보드 입력마다 React의 state를 갱신해서 보여준다.
+ > element에서 확인  
+
+시간순으로 보면 다음과 같이 동작한다.    
+ > 유저입력 > handleChange > React의 state 갱신 > form element가 React state를 참조
+유저 입력을 강제로 대문자로 변경할 경우에도 사용한다.
+
+```jsx
+      class TodoApp extends React.Component {
+           constructor(props){
+                super(props);
+                this.state = {items: [], text:''};
+                this.handleChange = this.handleChange.bind(this);
+                this.handleSubmit = this.handleSubmit.bind(this);
+           }
+           render() {
+                return (
+                     <div>
+                         <h3>TODO</h3>
+                         <TodoList items={this.state.items} />
+                         <form onSubmit={this.handleSubmit}>
+                              <label htmlFor="new-todo">What needs to be done?</label>
+                              <input id="new-todo" onChange={this.handleChange} value={this.state.text}/>
+                              <button>
+                                   Add #{this.state.items.length + 1}
+                              </button>
+                         </form>
+                     </div>
+                )
+           }
+```
+- render()메소드 에서 초기 렌더링을 실행한다.
+- onChange를 통해 input에 입력되는 값으로 state 상태 변경을 준비한다.
+- 입력된 값은 state의 "text: ' ' "에 임시로 저장된다.
+- lavel의 htmlFor은 input과의 연결을 위한 id값이다
+- 버튼을 클릭하면 버튼의 숫자를 증가시킨다.
+- 리스트는 배열로 저장되기 때문에 item.length를 통해 list의 수를 확인한다.
+- input area에 이벤트가 발생하면 handleChange(e)가 동작하여 State의 text값을 변경한다.
+- 'Add #x'버튼을 클릭하면 리스트의 index에 1을 더해서 버튼에 출력한다.
+```jsx
+           handleChange(e) {
+                this.setState({text: e.target.value});
+           }
+
+```
+- 크롬 DevTool을 열어 실시간으로 state가 변화하는 것을 확인한다.
+```jsx
+           handleSubmit(e) {
+                e.preventDefault();
+                if(this.state.text.length === 0){
+                     return;
+                }
+                const newItem = {
+                     text: this.state.text,
+                     id: Date.now()
+                }
+                this.setState(state => ({
+                     items: state.items.concat(newItem),
+                     text:''
+                }))
+           }
+      }
+```
+- handleSubmit은 버튼이 클릭될 때 발생하는 event를 처리한다.   
+> handleSubmit(e)에서 e.preventDefault()메소드를 사용하는 이유
+> - 브라우저에서 양식을 제출할 때는 기본적으로 브라우저의 새로 고침이 발생하는데, React나 SPA의 경우 필요가 없는 동작임으로 이를 방지하기 위해 사용된다.
+
+```jsx
+      class TodoList extends React.Component {
+           render() {
+                return(
+                     <ul>
+                     {this.props.items.map(item => (<li key={item.id}>{item.text</li>}))}
+                     </ul>
+                )
+           }
+      }
+```
+- todolist class 생성한다
+- ul안에 추가된 task를 li로 출력한다.
+- 앞서 저장한 id값은 key props로 사용한다.
+- 마지막으로 ReactDOM으로 랜더링만 사면 끝난다.
+```jsx
+      ReactDom.render(
+           <TodoApp />,
+           document.getElementById('todos-example')
+      ) 
+ ```
+ <b>handleSubmit(e)에서 e.preventDefault()메소드를 사용하는 이유</b>
+  - 브라우저에서 양식을 제출할 때는 기본적으로 브라우저의 새로 고침이 발생하는데, React나 SPA의 경우 필요가 없는 동작임으로 이를 방지하기 위해 사용된다.
+
+ <b>외부 플러그인을 사용하는 컴포넌트</b>
+ - React는 유연하며 다른 라이브러리나 프레임워크를 함께 활용할 수 있다.
+ - 이 예제에서는 외부 마크다운 라이브러리인 remarkable을 사용해 textarea의 값을 실시간으로 
+변환한다.
+
+<b>Markdown 예제</b>   
+ 외부컴포넌트를 사용한 markdown에디터 이다.     
+ 외부 플로그인은 Remarkable을 사용함으로 CDN으로 링크를 추가한다.
+```jsx
+  class MarkdownEditor extends React.Component {
+  constructor(props) {
+    super(props);
+    this.md = new Remarkable();
+    this.handleChange = this.handleChange.bind(this);
+    this.state = { value: 'Hello, **world**!' };
+  }
+
+  handleChange(e) {
+    this.setState({ value: e.target.value });
+  }
+
+  getRawMarkup() {
+    return { __html: this.md.render(this.state.value) };
+  }
+
+  render() {
+    return (
+      <div className="MarkdownEditor">
+        <h3>Input</h3>
+        <label htmlFor="markdown-content">
+          Enter some markdown
+        </label>
+        <textarea
+          id="markdown-content"
+          onChange={this.handleChange}
+          defaultValue={this.state.value} />
+        <h3>Output</h3>
+        <div
+          className="content"
+          dangerouslySetInnerHTML={this.getRawMarkup()} />
+      </div>
+    );
+  }
+}
+
+ReactDOM.render(
+  <MarkdownEditor />,
+  document.getElementById('markdown-example')
+);
+```
+
+
 ## [ 11월 10일 ]  
 ### <b>학습내용</b>
 <b>영화 앱 깃허브에 배포하기</b>
