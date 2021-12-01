@@ -1,4 +1,115 @@
 # 허성빈 201840235
+## [ 12월 01일 ] 
+### <b>학습내용</b>
+<b>React [주요개념](https://ko.reactjs.org/docs/getting-started.html)</b>  
+
+4. Component와 Props [★](https://ko.reactjs.org/docs/components-and-props.html)
+     - 컴포넌트 추출 : 컴포넌트를 여러 개의 작은 컴포넌트로 나누어 관리 편의성 및 가독성을 높인다.
+          - props의 이름은 사용될 context가 아닌 컴포넌트 자체의 관점에서 짓는 것을 권장한다. 
+          -  컴포넌트를 추출하는 작업이 지루해 보일 수 있다. 
+          - 하지만 재사용 가능한 컴포넌트를 만들어 놓는 것은 더 큰 앱에서 작업할 때 두각을 나타낸다.
+     - props는 읽기 전용이다.
+          - 함수 컴포넌트나 클래스 컴포넌트 모두 컴포넌트의 자체 `props를 수정해서는 안된다`.
+          - React는 매우 유연하지만 한 가지 엄격한 규칙이 있다. React 컴포넌트는 자신의 props를 다룰 때 반드시 `순수 함수`처럼 동작해야 한다.
+               - [순수 함수](https://en.wikipedia.org/wiki/Pure_function)는 입력값을 바꾸려 하지 않고 항상 동일한 입력값에 대해 동일한 결과를 반환한다.
+5. State and Lifecyle [★](https://ko.reactjs.org/docs/state-and-lifecycle.html)
+     - Clock 컴포넌트를 완전히 재사용하고 캡슐화하는 방법을 알아본다.
+     - [첫 번째 예제](https://codepen.io/gaearon/pen/gwoJZk?editors=0010)와 [두 번째 예제](https://codepen.io/gaearon/pen/dpdoYR?editors=0010)는 컴포넌트의 분리만 있을 뿐 차이가 없다.
+     - 중요한 것은 clock이 스스로 업데이트하도록 만들기 위해서는 clock에 state가 있어야 한다.
+     - `State`는 props와 유사하지만, 비공개이며 `컴포넌트에 의해 완전히 제어`된다.
+     - 함수에서 클래스로 변환하기
+          1. React.Component를 확장하는 동일한 이름의 ES6 class를 생성한다.
+          2. render() 라고 불리는 빈 메서드를 추가한다.
+          3. 함수의 내용을 redner()메서드 안으로 옮긴다.
+          4. render() 내용 안에 있는  props를 this.props로 변경한다.
+          5. 남아있는 빈 함수 선언을 삭제한다.
+               - [결과물](https://codepen.io/gaearon/pen/zKRGpo?editors=0010)
+     - 클래스에 로컬 State 추가하기 ( 예제 )
+          1. render() 메서드 안에 있는 this.props.date를 this.state.date로 변경한다
+               ```jsx
+                class Clock extends React.Component {
+                 render() {
+                   return (
+                     <div>
+                       <h1>Hello, world!</h1>
+                       <h2>It is {this.state.date.toLocaleTimeString()}.</h2>
+                     </div>
+                    );
+                  }
+                }
+               ```
+          2. 초기 this.state를 지정하는 class constructor를 추가한다.
+               - props를 기본 constructor에 전달하는지 유의
+               ```jsx
+                 class Clock extends React.Component {
+                  constructor(props) {
+                    super(props);
+                    this.state = {date: new Date()};
+                  }
+                  render() {
+                    return (
+                      <div>
+                       <h1>Hello, world!</h1>
+                        <h2>It is {this.state.date.toLocaleTimeString()}.</h2>
+                      </div>
+                    );
+                  }
+                 }
+               ```
+          3. < Clock /> 요소에서 date prop을 삭제합니다.
+               ```jsx
+                ReactDOM.render(
+                    <Clock />,
+                    document.getElementById('root')
+                );
+               ```
+               - [결과물](https://codepen.io/gaearon/pen/KgQpJd?editors=0010)
+          - tick()메서드가 들어가지 않아 현재시간만 표시되고 시간에 따른 변화가 없다.
+     - 생명주기 메서드를 클래스에 추가하기
+          - Clock이 처음 DOM에 렌더링 될 때마다 타이머를 설정하려고 하는 것을 React에서 `마운팅`이라고 한다.
+          - Clock에 의해 생섣된 DOM이 삭제될 때마다 타이머를 해제하려고 하는 것을 React에서 `언마운팅`이라고 한다.
+          - componentDidMount() 메서드
+               ``` jsx
+                componentDidMount() {
+                  this.timerID = setInterval(
+                    () => this.tick(),
+                    1000
+                  );
+                }
+               ```
+          - componentWillunmount() 메서드
+               ```jsx
+                componentWillUnmount() {
+                  clearInterval(this.timerID);
+                }
+               ```
+          - Clok 컴포넌트가 매초 작동할 수 있도록 tick()메서드를 구현하여 위 예제에 적용
+               - [결과물](https://codepen.io/gaearon/pen/amqdNA?editors=0010)
+          - 요약
+               1. < Clock />가 ReactDOM.render()로 전달되었을 때 React는 Clock 컴포넌트의 `constructor`를 호출하여 `this.state를 초기화`한다.
+               2. Clock 컴포넌트의 render() 메서드를 호출하여 화면에 표시되어야 할 내용을 알게 된 후 렌더링 출력값을 일치시키기 위해 DOM을 업데이트한다.
+               3. `componentDidMount()` 생명주기 메서드를 호출하고 그 안에 Clock 컴포넌트는 매초 컴포넌트의 tick()메서드를 호출하기 위한 타이머를 설정하도록 브라우저에 요청한다.
+               4. 매초 브라우저가 tick()메서드를 호출하고 그 안에 Clock컴포넌트는 setState()에 현재 시각을 포함하는 객체를 호출하여 `DOM을 업데이트`한다.
+               5. Clock 컴포넌트가 DOM으로부터 한 번이라도 삭제된 적이 있다면 React는 타이머를 멈추기 위해 componentWillUnmount() 생명주기 메서드를 호출합니다.
+     - State를 올바르게 사용하기
+          1. 직접 State를 수정하지 않는다.
+          2. State 업데이트는 비동기적일 수도 있다.
+          3. State 업데이트는 병합됩니다.
+     - 데이터는 아래로 흐른다.
+          - 부모 컴포넌트나 자식 컴포넌트 모두 특정 컴포넌트가 stateful인지 또는 stateless 인지 알 수 없어 state는 종종 로컬 또는 캡슐화라고 불린다.
+          - 컴포넌트는 자신의 state를 자식 컴포넌트에 props로 전달 할 수 있다.
+          - 일반적으로 이를 `하향식` 또는 `단방향식` 데이터 흐름이라고 한다.
+          - React 앱에서 컴포넌트가 `stateful` 또는 `stateless`에 대한 것은 시간이 지남에 따라 변경될 수 있는 구현 세부 사항으로 간주한다.
+          - stateful 컴포넌트 안에서 stateless 컴포넌트를 사용할 수 있으며, 그 반대 경우도 마찬가지로 사용할 수 있다.
+6. 이벤트 처리하기[★](https://ko.reactjs.org/docs/handling-events.html)
+     - React 엘리먼트에서 이벤트를 처리하는 방식은 DOM 엘리먼트에서 이벤트를 처리하느 방식과 매우 유사하다.
+     - 몇 가지 차이점
+          - React의 이벤트는 소문자 대신 캐멀 케이스를 사용한다.
+          - JSX를 사용하여 문자열이 아닌 함수로 이벤트 핸들러를 전달한다.
+          - React에서는 false를 반환해도 기본 동작을 방지할 수 없으며, 반드시 preventDefault를 명시적으로 호출해야 한다.
+          - JS에서는 DOM 엘리먼트가 생성된 후 리스너를 추가하기 위해 addEventListener를 호출하지만, React에서는 엘리먼트가 처음 렌더링 될 때 리스너를 제공하면 된다.
+     - [예제](https://codepen.io/gaearon/pen/xEmzGg?editors=0010)
+
 ## [ 11월 24일 ]  
 ### <b>학습내용</b>
 <b>create-react-app으로 [Remarkable] 사용하기</b>   
